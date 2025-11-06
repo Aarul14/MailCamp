@@ -8,12 +8,14 @@ import (
 
 func loadRecipient(filePath string, ch chan Recipient) error {
 
+	defer close(ch) //channel band hojaega once sare emails khatam ho gye so that there would be no consumer waiting to recieve a messag  e
+
 	f, err := os.Open(filePath)
 	if err != nil{
 		return err
 	}
 
-	defer f.Close()
+	defer f.Close() //close the .csv file when everything done
 
 	r := csv.NewReader(f)
 	records, err  := r.ReadAll()  
@@ -28,7 +30,6 @@ func loadRecipient(filePath string, ch chan Recipient) error {
 
 		//untill and unless there is no one to recieve
 		//this remains blocked
-
 		ch <-  Recipient{   
 			Name: record[0],
 			Email: record[1],
