@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"sync"
+	"text/template"
 )
 type Recipient struct {
 	Name string
@@ -20,5 +22,27 @@ func main(){
 	}
 
 	wg.Wait()
+
+}
+
+
+func executeTemplate(r Recipient)(string, error){
+	t, err := template.ParseFiles("email.tmpl")
+	if err != nil{
+		return "", err
+	} 
+	
+	//buffer is used to store the htmlTemplate in a memory
+
+	var tpl bytes.Buffer
+	
+	//Take the template t, fill in all {{.Name}} and other variables using r, and write the result into tpl.”
+	err = t.Execute(&tpl, r) 
+	if err!=nil{
+		return "", err
+	}
+
+	//tpl.String() converts the buffer into a plain Go string.
+	return tpl.String(),nil
 
 }

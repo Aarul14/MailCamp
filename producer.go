@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/csv"
-	"fmt"
 	"os"
 )
 
@@ -25,7 +24,7 @@ func loadRecipient(filePath string, ch chan Recipient) error {
 
 
 	for _, record:= range records[1:]{  //ignored the first row of csv that is the header row
-		fmt.Println(record)
+		//fmt.Println(record)
 		//send -> consumer -> channels
 
 		//untill and unless there is no one to recieve
